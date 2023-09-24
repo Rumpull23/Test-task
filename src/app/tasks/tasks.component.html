@@ -1,0 +1,83 @@
+<h2>Мои задачи</h2>
+<button style="background-color: #405061; color: white" (click)="onAddClick()">Добавить задачу</button>
+<div style="display: flex">
+
+<div>
+<ul class="tasks">
+  <div class="categories">
+    <span class="category">Название задачи</span>
+    <span class="category">Дата</span>
+    <span  class="category" style="margin-left: 10px">Время</span>
+    <span class="category">Категория</span>
+    <span class="category">Статус</span>
+  </div>
+  <li *ngFor="let task of filteredList?filteredList:(list$ | async)">
+      <span   class="name">{{task.title}}</span>
+      <span class="name">{{task.date | date: 'dd/MM/yyyy'}}</span>
+    <span  class="name">{{task.time}}</span>
+    <span  class="name">{{task.category}}</span>
+    <span  class="name">{{task.status}}</span>
+    <button class="badge"  style="margin-left: 20px"   [class.selected]="task === selectedTask" (click)="onSelect(task)">Редактировать</button>
+    <button class="close" style="width:48px; background-color: white;  display: inline-block; " mat-icon-button (click)="onDeleteClick(task)">  <mat-icon>close</mat-icon></button>
+  </li>
+</ul>
+</div>
+  <div style="display: flex; flex-direction: column">
+    <h2>Фильтры</h2>
+    <form ngxsForm="main.taskList" [formGroup]="form">
+      <div>
+        <h3>Фильтр по дате</h3>
+      <mat-form-field appearance="fill">
+<!--        <mat-label>Выбрать дату</mat-label>-->
+        <mat-date-range-input [rangePicker]="picker1">
+          <input formControlName="startDate" matStartDate placeholder="С какой даты">
+          <input formControlName="endDate" matEndDate placeholder="По какую">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker1></mat-date-range-picker>
+      </mat-form-field>
+      </div>
+      <div>
+        <h3> Фильтр по затраченным часам</h3>
+      <mat-form-field>
+<!--        <mat-label>Время</mat-label>-->
+        <select  formControlName="timeFilter" matNativeControl>
+          <option value="0.5">0.5</option>
+          <option value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2">2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4">4</option>
+          <option value="4.5">4.5</option>
+          <option value="5">5</option>
+        </select>
+      </mat-form-field>
+      </div>
+      <div>
+        <h3> Фильтр по статусу</h3>
+        <mat-form-field>
+          <mat-label>Статус</mat-label>
+          <select formControlName="statusFilter" matNativeControl>
+            <option value="Выполнено">Выполнено</option>
+            <option value="Не выполнено">Не выполнено</option>
+          </select>
+        </mat-form-field>
+      </div>
+      <div>
+        <h3> Фильтр по категориям</h3>
+        <mat-form-field>
+          <mat-label>Категория</mat-label>
+          <select  formControlName="categoryFilter" matNativeControl required>
+            <option value="Рабочий проект 1">Рабочий проект 1</option>
+            <option value="Рабочий проект 2">Рабочий проект 2</option>
+            <option value="Дом проект">Дом проект</option>
+          </select>
+        </mat-form-field>
+      </div>
+      <button (click)="clearFilter()">Очистить фильтрацию</button>
+    </form>
+  </div>
+</div>
+<!--<app-task-detail [task]="selectedTask"></app-task-detail>-->
